@@ -41,4 +41,6 @@ const getRandomFloat = (min, max, digitsAfterComma = 0) => {
   return Number(rand.toFixed(digitsAfterComma));
 };
 
-export { getRandomFloat, getRandomInt };
+const showElement = (element, elementParent) => elementParent.appendChild(element);
+
+export { getRandomFloat, getRandomInt, showElement };

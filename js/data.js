@@ -46,6 +46,11 @@ const FAKE_LOCATION_PRECISION = 5;
 /* ФУНКЦИИ-ГЕНЕРАТОРЫ */
 const generateAuthor = (id) => {
   const author = {};
+
+  if (id < 10) {
+    id = '0' + id;
+  }
+
   author.avatar = `img/avatars/user${id}.png`;
 
   return author
@@ -102,11 +107,11 @@ const generateLocation = () => {
   return location;
 };
 
-const addOffer = (_offerAuthor, _offerContent, _offerLocation) => {
+const addOffer = (offerAuthor, offerContent, offerLocation) => {
   const offer = {
-    author: _offerAuthor,
-    offer: _offerContent,
-    location: _offerLocation
+    author: offerAuthor,
+    offer: offerContent,
+    location: offerLocation
   };
 
   return offer;
@@ -117,7 +122,6 @@ const generateOffers = (offersNumber) => {
   let offerLocation, offerAuthor, offerContent = {};
   for (let i = 1; i <= offersNumber; i++) {
     let id = i % 8 || 8;
-    id = '0' + id;
 
     offerLocation = generateLocation();
     offerAuthor = generateAuthor(id);
@@ -129,4 +133,7 @@ const generateOffers = (offersNumber) => {
   return offers;
 };
 
-export { generateOffers };
+const FAKE_OFFERS_NUMBER = 10;
+const offers = (generateOffers(FAKE_OFFERS_NUMBER));
+
+export { offers };
