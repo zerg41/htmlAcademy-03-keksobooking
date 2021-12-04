@@ -12,7 +12,7 @@ const translateOfferType = (type) => {
   }
 };
 
-const renderCapacity = (rooms, guests) => {
+const setCapacity = (rooms, guests) => {
   let roomsDescription;
   switch(parseInt(rooms)) {
     case 1: {
@@ -34,7 +34,7 @@ const renderCapacity = (rooms, guests) => {
   return `${rooms} ${roomsDescription} для ${guests} ${guests == 1 ? 'гостя' : 'гостей'}`
 };
 
-const renderFeatures = (featuresList, features) => {
+const setFeatures = (featuresList, features) => {
   featuresList.innerHTML = '';
   features.map(feature => {
     featuresList.innerHTML += `<li class="popup__feature popup__feature--${feature}"></li>`
@@ -43,7 +43,7 @@ const renderFeatures = (featuresList, features) => {
   return featuresList;
 };
 
-const renderPhotos = (photosList, photos) => {
+const setPhotos = (photosList, photos) => {
   photosList.innerHTML = '';
   if (photos.length !== 0) {
     photos.map(photo => {
@@ -54,7 +54,7 @@ const renderPhotos = (photosList, photos) => {
   return photosList;
 };
 
-const renderOfferCard = ({
+const createOfferCard = ({
   offer : {title},
   offer : {address},
   offer : {price},
@@ -75,14 +75,14 @@ const renderOfferCard = ({
   offerCard.querySelector('.popup__text--address').textContent = address;
   offerCard.querySelector('.popup__text--price').textContent = `${price} ₽/ночь`;
   offerCard.querySelector('.popup__type').textContent = translateOfferType(type);
-  offerCard.querySelector('.popup__text--capacity').textContent = renderCapacity(rooms, guests);
+  offerCard.querySelector('.popup__text--capacity').textContent = setCapacity(rooms, guests);
   offerCard.querySelector('.popup__text--time').textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
-  renderFeatures(featuresList, features);
+  setFeatures(featuresList, features);
   offerCard.querySelector('.popup__description').textContent = description;
-  renderPhotos(photosList, photos);
+  setPhotos(photosList, photos);
   offerCard.querySelector('.popup__avatar').src = avatar;
 
   return offerCard;
 };
 
-export { renderOfferCard };
+export { createOfferCard };

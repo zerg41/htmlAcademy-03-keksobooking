@@ -1,18 +1,18 @@
 /** ГЕНЕРАЦИЯ ДАННЫХ **/
 
-import { getRandomFloat, getRandomInt } from './main.js';
+import { getRandomFloat, getRandomInt, extractRandomItemsFromArray, FIRST_TWO_DIGIT_NUMBER } from './main.js';
 
-/* ПАРАМЕТРЫ ГЕНЕРАТОРОВ */
 /* eslint-disable comma-dangle */
-const FAKE_OFFER_TYPES = ['palace', 'flat', 'house', 'bungalow'];
-const FAKE_OFFER_HOURS = ['12:00', '13:00', '14:00'];
-const FAKE_OFFER_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-const FAKE_OFFER_PHOTOS = [
+/* ПАРАМЕТРЫ ВРЕМЕННЫХ ОБЪЯВЛЕНИЙ */
+const OFFER_TYPES = ['palace', 'flat', 'house', 'bungalow'];
+const OFFER_HOURS = ['12:00', '13:00', '14:00'];
+const OFFER_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+const OFFER_PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
-const FAKE_OFFER_TITLES = [
+const OFFER_TITLES = [
   'Apart-Hotel высота +540',
   'The Palace',
   'Villas at Marina Inn at Grande Dunes',
@@ -24,7 +24,7 @@ const FAKE_OFFER_TITLES = [
   'House By The Beach',
   'ARROWHEAD AT RIVERWALK-Golf, close to beaches. LOCATION!'
 ];
-const FAKE_OFFER_DESCRIPTIONS = [
+const OFFER_DESCRIPTIONS = [
   'Апарт-отель Grand Sandestin расположен в 2,6 км от пляжа Мирамар. К услугам гостей открытый бассейн, частный пляж и апартаменты с кондиционером.',
   'Апартаменты Purple Sunset - Central Destin - 1BR Condo с кондиционером и собственным бассейном расположены в городе Дестин. К услугам гостей бесплатная частная парковка.',
   'Апартаменты Sandestin Resort Bahia by Tufan расположены в Дестине, в 2,5 км от пляжа Мирамар и в 600 м от круизной компании SunQuest Cruises.',
@@ -36,78 +36,58 @@ const FAKE_OFFER_DESCRIPTIONS = [
   'Апарт-отель The Palace расположен в городе Миртл-Бич, в 3 км от парка штата Миртл-Бич и в 3,1 км от набережной Миртл-Бич.',
   'Апартаменты ARROWHEAD AT RIVERWALK-Golf расположены в городе Мертл-Бич, в 3,1 км от торгового центра The Market Common и в 5 км от парка штата Миртл-Бич. Расположение!',
 ];
+const MIN_PRICE = 1000;
+const MAX_PRICE = 100000;
+const MIN_ROOMS = 1;
+const MAX_ROOMS = 10;
+const MIN_GUESTS = 1;
+const MAX_GUESTS = 10;
+const LOCATION_X_MIN = 35.65000;
+const LOCATION_X_MAX = 35.70000;
+const LOCATION_Y_MIN = 139.70000;
+const LOCATION_Y_MAX = 139.80000;
+const LOCATION_PRECISION = 5;
+const FAKE_OFFERS_NUMBER = 10;
 
-const FAKE_LOCATION_X_MIN = 35.65000;
-const FAKE_LOCATION_X_MAX = 35.70000;
-const FAKE_LOCATION_Y_MIN = 139.70000;
-const FAKE_LOCATION_Y_MAX = 139.80000;
-const FAKE_LOCATION_PRECISION = 5;
+const AVATARS_NUMBER = 8;
 
 /* ФУНКЦИИ-ГЕНЕРАТОРЫ */
-const generateAuthor = (id) => {
-  const author = {};
-
-  if (id < 10) {
-    id = '0' + id;
-  }
-
-  author.avatar = `img/avatars/user${id}.png`;
+const generateOfferAuthor = (id) => {
+  const author = {
+    avatar : `img/avatars/user${id < FIRST_TWO_DIGIT_NUMBER ? '0' + id : id}.png`
+  };
 
   return author
 };
 
-const generateOfferFeatures = () => {
-  const features = new Set();
-
-  FAKE_OFFER_FEATURES.map((feature) => {
-    if (getRandomInt(0, 1) === 1) {
-      features.add(feature);
-    }
-  });
-
-  return [...features];
-};
-
-const generateOfferPhotos = () => {
-  const photos = new Set();
-
-  FAKE_OFFER_PHOTOS.map((photo) => {
-    if (getRandomInt(0, 1) === 1) {
-      photos.add(photo);
-    }
-  });
-
-  return [...photos];
-};
-
-const generateOffer = (locationX, locationY) => {
-  const offer = {};
-
-  offer.title = FAKE_OFFER_TITLES[getRandomInt(0, FAKE_OFFER_TITLES.length - 1)];
-  offer.address = `${locationX}, ${locationY}`;
-  offer.price = getRandomInt(100, 40000);
-  offer.type = FAKE_OFFER_TYPES[getRandomInt(0, FAKE_OFFER_TYPES.length - 1)];
-  offer.rooms = getRandomInt(1, 10);
-  offer.guests = getRandomInt(1, 10);
-  offer.checkin = FAKE_OFFER_HOURS[getRandomInt(0, FAKE_OFFER_HOURS.length - 1)];
-  offer.checkout = FAKE_OFFER_HOURS[getRandomInt(0, FAKE_OFFER_HOURS.length - 1)];
-  offer.features = generateOfferFeatures();
-  offer.description = FAKE_OFFER_DESCRIPTIONS[getRandomInt(0, FAKE_OFFER_DESCRIPTIONS.length - 1)];
-  offer.photos = generateOfferPhotos();
+const generateOfferContent = (locationX, locationY) => {
+  const offer = {
+    title : OFFER_TITLES[getRandomInt(0, OFFER_TITLES.length - 1)],
+    address : `${locationX}, ${locationY}`,
+    price : getRandomInt(MIN_PRICE, MAX_PRICE),
+    type : OFFER_TYPES[getRandomInt(0, OFFER_TYPES.length - 1)],
+    rooms : getRandomInt(MIN_ROOMS, MAX_ROOMS),
+    guests : getRandomInt(MIN_GUESTS, MAX_GUESTS),
+    checkin : OFFER_HOURS[getRandomInt(0, OFFER_HOURS.length - 1)],
+    checkout : OFFER_HOURS[getRandomInt(0, OFFER_HOURS.length - 1)],
+    features : extractRandomItemsFromArray(OFFER_FEATURES),
+    description : OFFER_DESCRIPTIONS[getRandomInt(0, OFFER_DESCRIPTIONS.length - 1)],
+    photos : extractRandomItemsFromArray(OFFER_PHOTOS)
+  };
 
   return offer;
 };
 
-const generateLocation = () => {
-  const location = {};
-
-  location.x = getRandomFloat(FAKE_LOCATION_X_MIN, FAKE_LOCATION_X_MAX, FAKE_LOCATION_PRECISION);
-  location.y = getRandomFloat(FAKE_LOCATION_Y_MIN, FAKE_LOCATION_Y_MAX, FAKE_LOCATION_PRECISION);
+const generateOfferLocation = () => {
+  const location = {
+    x : getRandomFloat(LOCATION_X_MIN, LOCATION_X_MAX, LOCATION_PRECISION),
+    y : getRandomFloat(LOCATION_Y_MIN, LOCATION_Y_MAX, LOCATION_PRECISION)
+  };
 
   return location;
 };
 
-const addOffer = (offerAuthor, offerContent, offerLocation) => {
+const createOffer = (offerAuthor, offerContent, offerLocation) => {
   const offer = {
     author: offerAuthor,
     offer: offerContent,
@@ -121,19 +101,18 @@ const generateOffers = (offersNumber) => {
   let offers = [];
   let offerLocation, offerAuthor, offerContent = {};
   for (let i = 1; i <= offersNumber; i++) {
-    let id = i % 8 || 8;
+    let id = i % AVATARS_NUMBER || AVATARS_NUMBER;
 
-    offerLocation = generateLocation();
-    offerAuthor = generateAuthor(id);
-    offerContent = generateOffer(offerLocation.x, offerLocation.y);
+    offerLocation = generateOfferLocation();
+    offerAuthor = generateOfferAuthor(id);
+    offerContent = generateOfferContent(offerLocation.x, offerLocation.y);
 
-    offers.push(addOffer(offerAuthor, offerContent, offerLocation));
+    offers.push(createOffer(offerAuthor, offerContent, offerLocation));
   }
 
   return offers;
 };
 
-const FAKE_OFFERS_NUMBER = 10;
-const offers = (generateOffers(FAKE_OFFERS_NUMBER));
+const offers = generateOffers(FAKE_OFFERS_NUMBER);
 
 export { offers };

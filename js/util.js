@@ -1,5 +1,10 @@
-/** УТИЛИТАРНЫЕ ФУНКЦИИ **/
+/** УТИЛИТЫ **/
 
+/* КОНСТАНТЫ */
+const FIRST_TWO_DIGIT_NUMBER = 10;
+
+
+/* РАБОТА С ЧИСЛАМИ */
 /** Функция возвращает случайное целое число из переданного диапазона включительно
  *
  * @param {number} min диапазон "от", целое неотрицательное число
@@ -41,6 +46,34 @@ const getRandomFloat = (min, max, digitsAfterComma = 0) => {
   return Number(rand.toFixed(digitsAfterComma));
 };
 
-const showElement = (element, elementParent) => elementParent.appendChild(element);
 
-export { getRandomFloat, getRandomInt, showElement };
+/* РАБОТА С МАССИВАМИ */
+const extractRandomItemsFromArray = (array) => {
+
+  return array.filter(() => getRandomInt(0, 1));
+};
+
+
+/* РАБОТА С DOM-ЭЛЕМЕНТАМИ */
+const findOptionBySelect = (selectField) => {
+  const selectedOption = [...selectField.children].filter(option => option.selected === true)[0];
+
+  return selectedOption;
+};
+
+const findOptionByValue = (selectField, value) => {
+  const selectedOption = [...selectField.children].filter(option => option.value === value)[0];
+
+  return selectedOption;
+};
+
+
+/* ОТРИСОВКА ЭЛЕМЕНТОВ */
+const renderElementAfterElementParent = (element, elementParent) => elementParent.appendChild(element);
+
+
+export { getRandomFloat, getRandomInt };
+export { extractRandomItemsFromArray };
+export { findOptionBySelect, findOptionByValue};
+export { renderElementAfterElementParent };
+export { FIRST_TWO_DIGIT_NUMBER };
