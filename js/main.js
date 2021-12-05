@@ -1,11 +1,8 @@
 export * from './util.js';
-import { offers } from './data.js';
-import { createOfferCard } from './offerCard.js';
+export { offers, TOKYO_CENTER_LOCATION, LOCATION_PRECISION } from './data.js';
+export { createOfferCard } from './offerCard.js';
 import { activateFormHandlers } from './form.js';
-import { renderElementAfterElementParent as render } from './util.js';
+import { loadMap } from './map.js';
 
-const map = document.querySelector('#map-canvas');
-const testOfferCard = createOfferCard(offers[0]);
-render(testOfferCard, map);
-
+setTimeout(() => loadMap(), 1000);
 activateFormHandlers();

@@ -1,7 +1,7 @@
 /** УТИЛИТЫ **/
 
 /* КОНСТАНТЫ */
-const FIRST_TWO_DIGIT_NUMBER = 10;
+export const FIRST_TWO_DIGIT_NUMBER = 10;
 
 
 /* РАБОТА С ЧИСЛАМИ */
@@ -76,4 +76,3 @@ export { getRandomFloat, getRandomInt };
 export { extractRandomItemsFromArray };
 export { findOptionBySelect, findOptionByValue};
 export { renderElementAfterElementParent };
-export { FIRST_TWO_DIGIT_NUMBER };

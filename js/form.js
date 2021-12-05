@@ -1,6 +1,6 @@
 /** ОБРАБОТКА ПОЛЕЙ ВВОДЫ ФОРМЫ **/
 
-import { findOptionBySelect, findOptionByValue } from './main.js';
+import { findOptionBySelect, findOptionByValue, LOCATION_PRECISION, TOKYO_CENTER_LOCATION } from './main.js';
 
 const PRICE_LIST = Object.freeze({
   'bungalow' : 0,
@@ -16,6 +16,8 @@ const typeField = form.querySelector('#type');
 const priceField = form.querySelector('#price');
 const timeInField = form.querySelector('#timein');
 const timeOutField = form.querySelector('#timeout');
+const addressField = form.querySelector('#address');
+
 
 let minPrice = 1000;
 
@@ -24,6 +26,9 @@ const setMinimalPrice = (selectedType) => {
   minPrice = PRICE_LIST[selectedType];
 };
 
+const setAddress = ({lat, lng}) => {
+  addressField.value = `${lat.toFixed(LOCATION_PRECISION)} в.д., ${lng.toFixed(LOCATION_PRECISION)} с.ш.`
+};
 
 /* Обработчики */
 const priceFieldHandler = () => {
@@ -67,6 +72,9 @@ const setFormFields = () => {
   priceField.required = true;
   priceFieldHandler();
   priceField.max = MAX_PRICE;
+
+  addressField.setAttribute('readonly', '');
+  setAddress(TOKYO_CENTER_LOCATION);
 };
 
 
@@ -76,4 +84,4 @@ const activateFormHandlers = () => {
   enableFormHandlers();
 };
 
-export { activateFormHandlers };
+export { activateFormHandlers, setAddress };

@@ -2,7 +2,6 @@
 
 import { getRandomFloat, getRandomInt, extractRandomItemsFromArray, FIRST_TWO_DIGIT_NUMBER } from './main.js';
 
-/* eslint-disable comma-dangle */
 /* ПАРАМЕТРЫ ВРЕМЕННЫХ ОБЪЯВЛЕНИЙ */
 const OFFER_TYPES = ['palace', 'flat', 'house', 'bungalow'];
 const OFFER_HOURS = ['12:00', '13:00', '14:00'];
@@ -10,7 +9,7 @@ const OFFER_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', '
 const OFFER_PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
-  'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
+  'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
 ];
 const OFFER_TITLES = [
   'Apart-Hotel высота +540',
@@ -22,7 +21,7 @@ const OFFER_TITLES = [
   'Mr. Soof - By TLV2GO',
   'Eilot',
   'House By The Beach',
-  'ARROWHEAD AT RIVERWALK-Golf, close to beaches. LOCATION!'
+  'ARROWHEAD AT RIVERWALK-Golf, close to beaches. LOCATION!',
 ];
 const OFFER_DESCRIPTIONS = [
   'Апарт-отель Grand Sandestin расположен в 2,6 км от пляжа Мирамар. К услугам гостей открытый бассейн, частный пляж и апартаменты с кондиционером.',
@@ -46,15 +45,18 @@ const LOCATION_X_MIN = 35.65000;
 const LOCATION_X_MAX = 35.70000;
 const LOCATION_Y_MIN = 139.70000;
 const LOCATION_Y_MAX = 139.80000;
-const LOCATION_PRECISION = 5;
+export const LOCATION_PRECISION = 5;
+export const TOKYO_CENTER_LOCATION = Object.freeze({
+  lat : 35.68950,
+  lng : 139.69171,
+});
 const FAKE_OFFERS_NUMBER = 10;
-
 const AVATARS_NUMBER = 8;
 
 /* ФУНКЦИИ-ГЕНЕРАТОРЫ */
 const generateOfferAuthor = (id) => {
   const author = {
-    avatar : `img/avatars/user${id < FIRST_TWO_DIGIT_NUMBER ? '0' + id : id}.png`
+    avatar : `img/avatars/user${id < FIRST_TWO_DIGIT_NUMBER ? '0' + id : id}.png`,
   };
 
   return author
@@ -72,7 +74,7 @@ const generateOfferContent = (locationX, locationY) => {
     checkout : OFFER_HOURS[getRandomInt(0, OFFER_HOURS.length - 1)],
     features : extractRandomItemsFromArray(OFFER_FEATURES),
     description : OFFER_DESCRIPTIONS[getRandomInt(0, OFFER_DESCRIPTIONS.length - 1)],
-    photos : extractRandomItemsFromArray(OFFER_PHOTOS)
+    photos : extractRandomItemsFromArray(OFFER_PHOTOS),
   };
 
   return offer;
@@ -81,7 +83,7 @@ const generateOfferContent = (locationX, locationY) => {
 const generateOfferLocation = () => {
   const location = {
     x : getRandomFloat(LOCATION_X_MIN, LOCATION_X_MAX, LOCATION_PRECISION),
-    y : getRandomFloat(LOCATION_Y_MIN, LOCATION_Y_MAX, LOCATION_PRECISION)
+    y : getRandomFloat(LOCATION_Y_MIN, LOCATION_Y_MAX, LOCATION_PRECISION),
   };
 
   return location;
@@ -91,7 +93,7 @@ const createOffer = (offerAuthor, offerContent, offerLocation) => {
   const offer = {
     author: offerAuthor,
     offer: offerContent,
-    location: offerLocation
+    location: offerLocation,
   };
 
   return offer;
