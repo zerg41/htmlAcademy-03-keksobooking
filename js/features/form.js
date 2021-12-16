@@ -13,7 +13,7 @@ const roomsField = form.querySelector('#room_number');
 const guestsField = form.querySelector('#capacity');
 const featuresField = form.querySelector('.features');
 const descriptionField = form.querySelector('#description');
-const submitBtn = form.querySelector('.ad-form__submit');
+// const submitBtn = form.querySelector('.ad-form__submit');
 const resetBtn = form.querySelector('.ad-form__reset');
 
 /* Утилиты */
@@ -108,6 +108,7 @@ const resetDescription = () => {
   descriptionField.value = '';
 };
 
+
 /* Обработчики */
 const typeFieldHandler = () => {
   setMinimalPrice(findOptionBySelect(typeField).value);
@@ -139,11 +140,6 @@ const resetHandler = (evt) => {
   resetDescription();
 };
 
-const submitHandler = (evt) => {
-  evt.preventDefault();
-
-};
-
 /* Слушатели */
 const enableFormHandlers = () => {
   timeInField.addEventListener('change', () => timesFieldHandler(timeInField));
@@ -152,7 +148,6 @@ const enableFormHandlers = () => {
   roomsField.addEventListener('change', () => roomsFieldHandler());
 
   resetBtn.addEventListener('click', (evt) => resetHandler(evt));
-  submitBtn.addEventListener('click', (evt) => submitHandler(evt));
 };
 
 
