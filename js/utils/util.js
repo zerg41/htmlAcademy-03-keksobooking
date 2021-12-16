@@ -1,9 +1,5 @@
 /** УТИЛИТЫ **/
 
-/* КОНСТАНТЫ */
-export const FIRST_TWO_DIGIT_NUMBER = 10;
-
-
 /* РАБОТА С ЧИСЛАМИ */
 /** Функция возвращает случайное целое число из переданного диапазона включительно
  *
@@ -11,7 +7,7 @@ export const FIRST_TWO_DIGIT_NUMBER = 10;
  * @param {number} max диапазон "до", целое неотрицательное число
  * @returns {number} целое число из диапазона "от...до"
  */
-const getRandomInt = (min, max) => {
+export const getRandomInt = (min, max) => {
   if (min < 0 || max < 0) {
     const error = new Error('Параметры должны быть >= 0');
     throw error;
@@ -32,7 +28,7 @@ const getRandomInt = (min, max) => {
  * @param {number} digitsAfterComma количество знаков после запятой
  * @returns {number} число с плавающей точкой из диапазона "от...до" с указанным "количеством знаков после запятой"
  */
-const getRandomFloat = (min, max, digitsAfterComma = 0) => {
+export const getRandomFloat = (min, max, digitsAfterComma = 0) => {
   if (min < 0 || max < 0 || digitsAfterComma < 0) {
     const error = new Error('Параметры должны быть >= 0');
     throw error;
@@ -46,33 +42,24 @@ const getRandomFloat = (min, max, digitsAfterComma = 0) => {
   return Number(rand.toFixed(digitsAfterComma));
 };
 
-
 /* РАБОТА С МАССИВАМИ */
-const extractRandomItemsFromArray = (array) => {
+export const extractRandomItemsFromArray = (array) => {
 
   return array.filter(() => getRandomInt(0, 1));
 };
 
-
 /* РАБОТА С DOM-ЭЛЕМЕНТАМИ */
-const findOptionBySelect = (selectField) => {
+export const findOptionBySelect = (selectField) => {
   const selectedOption = [...selectField.children].filter(option => option.selected === true)[0];
 
   return selectedOption;
 };
 
-const findOptionByValue = (selectField, value) => {
+export const findOptionByValue = (selectField, value) => {
   const selectedOption = [...selectField.children].filter(option => option.value === value)[0];
 
   return selectedOption;
 };
 
-
 /* ОТРИСОВКА ЭЛЕМЕНТОВ */
-const renderElementAfterElementParent = (element, elementParent) => elementParent.appendChild(element);
-
-
-export { getRandomFloat, getRandomInt };
-export { extractRandomItemsFromArray };
-export { findOptionBySelect, findOptionByValue};
-export { renderElementAfterElementParent };
+export const renderElementAfterElementParent = (element, elementParent) => elementParent.appendChild(element);

@@ -12,7 +12,7 @@ const translateOfferType = (type) => {
   }
 };
 
-const setCapacity = (rooms, guests) => {
+const joinCapacity = (rooms, guests) => {
   let roomsDescription;
   switch(parseInt(rooms)) {
     case 1: {
@@ -34,7 +34,7 @@ const setCapacity = (rooms, guests) => {
   return `${rooms} ${roomsDescription} для ${guests} ${guests == 1 ? 'гостя' : 'гостей'}`
 };
 
-const setFeatures = (featuresList, features) => {
+const joinFeatures = (featuresList, features) => {
   featuresList.innerHTML = '';
   features.map(feature => {
     featuresList.innerHTML += `<li class="popup__feature popup__feature--${feature}"></li>`
@@ -43,7 +43,7 @@ const setFeatures = (featuresList, features) => {
   return featuresList;
 };
 
-const setPhotos = (photosList, photos) => {
+const joinPhotos = (photosList, photos) => {
   photosList.innerHTML = '';
   if (photos.length !== 0) {
     photos.map(photo => {
@@ -54,7 +54,7 @@ const setPhotos = (photosList, photos) => {
   return photosList;
 };
 
-const createOfferCard = ({
+export const createOfferCard = ({
   offer : {title},
   offer : {address},
   offer : {price},
@@ -75,14 +75,12 @@ const createOfferCard = ({
   offerCard.querySelector('.popup__text--address').textContent = address;
   offerCard.querySelector('.popup__text--price').textContent = `${price} ₽/ночь`;
   offerCard.querySelector('.popup__type').textContent = translateOfferType(type);
-  offerCard.querySelector('.popup__text--capacity').textContent = setCapacity(rooms, guests);
+  offerCard.querySelector('.popup__text--capacity').textContent = joinCapacity(rooms, guests);
   offerCard.querySelector('.popup__text--time').textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
-  setFeatures(featuresList, features);
+  joinFeatures(featuresList, features);
   offerCard.querySelector('.popup__description').textContent = description;
-  setPhotos(photosList, photos);
+  joinPhotos(photosList, photos);
   offerCard.querySelector('.popup__avatar').src = avatar;
 
   return offerCard;
 };
-
-export { createOfferCard };
