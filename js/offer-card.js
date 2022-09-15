@@ -3,18 +3,23 @@
 const offerCardTemplate = document.getElementById('card').content.children[0];
 
 const translateOfferType = (type) => {
-  switch(type.toString()) {
-    case 'flat': return 'Квартира';
-    case 'bungalow': return 'Бунгало';
-    case 'house': return 'Дом';
-    case 'palace': return 'Дворец';
-    default: return '';
+  switch (type.toString()) {
+    case 'flat':
+      return 'Квартира';
+    case 'bungalow':
+      return 'Бунгало';
+    case 'house':
+      return 'Дом';
+    case 'palace':
+      return 'Дворец';
+    default:
+      return '';
   }
 };
 
 const joinCapacity = (rooms, guests) => {
   let roomsDescription;
-  switch(parseInt(rooms)) {
+  switch (parseInt(rooms)) {
     case 1: {
       roomsDescription = 'комната';
       break;
@@ -31,13 +36,15 @@ const joinCapacity = (rooms, guests) => {
     }
   }
 
-  return `${rooms} ${roomsDescription} для ${guests} ${guests == 1 ? 'гостя' : 'гостей'}`
+  return `${rooms} ${roomsDescription} для ${guests} ${
+    guests == 1 ? 'гостя' : 'гостей'
+  }`;
 };
 
 const joinFeatures = (featuresList, features) => {
   featuresList.innerHTML = '';
-  features.map(feature => {
-    featuresList.innerHTML += `<li class="popup__feature popup__feature--${feature}"></li>`
+  features.map((feature) => {
+    featuresList.innerHTML += `<li class="popup__feature popup__feature--${feature}"></li>`;
   });
 
   return featuresList;
@@ -46,8 +53,8 @@ const joinFeatures = (featuresList, features) => {
 const joinPhotos = (photosList, photos) => {
   photosList.innerHTML = '';
   if (photos.length !== 0) {
-    photos.map(photo => {
-      photosList.innerHTML += `<img src="${photo}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`
+    photos.map((photo) => {
+      photosList.innerHTML += `<img src="${photo}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`;
     });
   }
 
@@ -55,28 +62,37 @@ const joinPhotos = (photosList, photos) => {
 };
 
 export const createOfferCard = ({
-  offer : {title},
-  offer : {address},
-  offer : {price},
-  offer : {type},
-  offer : {rooms},
-  offer : {guests},
-  offer : {checkin},
-  offer : {checkout},
-  offer : {features},
-  offer : {description},
-  offer : {photos},
-  author : {avatar}}) => {
+  offer: { title },
+  offer: { address },
+  offer: { price },
+  offer: { type },
+  offer: { rooms },
+  offer: { guests },
+  offer: { checkin },
+  offer: { checkout },
+  offer: { features },
+  offer: { description },
+  offer: { photos },
+  author: { avatar },
+}) => {
   const offerCard = offerCardTemplate.cloneNode(true);
   const featuresList = offerCard.querySelector('.popup__features');
   const photosList = offerCard.querySelector('.popup__photos');
 
   offerCard.querySelector('.popup__title').textContent = title;
   offerCard.querySelector('.popup__text--address').textContent = address;
-  offerCard.querySelector('.popup__text--price').textContent = `${price} ₽/ночь`;
-  offerCard.querySelector('.popup__type').textContent = translateOfferType(type);
-  offerCard.querySelector('.popup__text--capacity').textContent = joinCapacity(rooms, guests);
-  offerCard.querySelector('.popup__text--time').textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
+  offerCard.querySelector(
+    '.popup__text--price'
+  ).textContent = `${price} ₽/ночь`;
+  offerCard.querySelector('.popup__type').textContent =
+    translateOfferType(type);
+  offerCard.querySelector('.popup__text--capacity').textContent = joinCapacity(
+    rooms,
+    guests
+  );
+  offerCard.querySelector(
+    '.popup__text--time'
+  ).textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
   joinFeatures(featuresList, features);
   offerCard.querySelector('.popup__description').textContent = description;
   joinPhotos(photosList, photos);

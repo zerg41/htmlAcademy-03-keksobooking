@@ -44,22 +44,26 @@ export const getRandomFloat = (min, max, digitsAfterComma = 0) => {
 
 /* РАБОТА С МАССИВАМИ */
 export const extractRandomItemsFromArray = (array) => {
-
   return array.filter(() => getRandomInt(0, 1));
 };
 
 /* РАБОТА С DOM-ЭЛЕМЕНТАМИ */
 export const findOptionBySelect = (selectField) => {
-  const selectedOption = [...selectField.children].filter(option => option.selected === true)[0];
+  const selectedOption = [...selectField.children].filter(
+    (option) => option.selected === true
+  )[0];
 
   return selectedOption;
 };
 
 export const findOptionByValue = (selectField, value) => {
-  const selectedOption = [...selectField.children].filter(option => option.value === value)[0];
+  const selectedOption = [...selectField.children].filter(
+    (option) => option.value === value
+  )[0];
 
   return selectedOption;
 };
 
 /* ОТРИСОВКА ЭЛЕМЕНТОВ */
-export const renderElementAfterElementParent = (element, elementParent) => elementParent.appendChild(element);
+export const renderElementAfterElementParent = (element, elementParent) =>
+  elementParent.appendChild(element);

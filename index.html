@@ -2,14 +2,15 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
+  <title>Кексобукинг</title>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <!-- Стили -->
+  <link rel="stylesheet" href="libraries/leaflet/leaflet.css">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="leaflet/leaflet.css">
-  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-  <title>Кексобукинг</title>
-
-  <script src="leaflet/leaflet.js" defer></script>
-  <script type="module" src="js/main.js" defer></script>
+  <!-- Скрипты -->
+  <script src="libraries/leaflet/leaflet.js" defer></script>
+  <script type="module" src="js/index.js" defer></script>
 </head>
 <body>
 
@@ -94,7 +95,7 @@
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="address">Адрес (координаты)</label>
-          <input id="address" name="address" type="text" readonly>
+          <input id="address" name="address" type="text" readonly disabled>
         </fieldset>
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="type">Тип жилья</label>
@@ -134,9 +135,9 @@
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="capacity">Количество мест</label>
           <select id="capacity" name="capacity">
-            <option value="3">для 3 гостей</option>
-            <option value="2">для 2 гостей</option>
             <option value="1" selected>для 1 гостя</option>
+            <option value="2">для 2 гостей</option>
+            <option value="3">для 3 гостей</option>
             <option value="0">не для гостей</option>
           </select>
         </fieldset>

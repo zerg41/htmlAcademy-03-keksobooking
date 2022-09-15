@@ -1,29 +1,43 @@
 /** ОБРАБОТКА ПОЛЕЙ ВВОДЫ ФОРМЫ **/
 
-import { MIN_PRICES, DEFAULT_TYPE, DEFAULT_TIME, DEFAULT_ROOMS_NUMBER, LOCATION_PRECISION,
-  findOptionBySelect, findOptionByValue, resetMap, form } from '../main.js';
+import { findOptionBySelect, findOptionByValue } from './utils.js';
 
-const titleField = form.querySelector('#title');
-const addressField = form.querySelector('#address');
-const typeField = form.querySelector('#type');
-const priceField = form.querySelector('#price');
-const timeInField = form.querySelector('#timein');
-const timeOutField = form.querySelector('#timeout');
-const roomsField = form.querySelector('#room_number');
-const guestsField = form.querySelector('#capacity');
-const featuresField = form.querySelector('.features');
-const descriptionField = form.querySelector('#description');
+const LOCATION_PRECISION = 5;
+const DefaultPrice = Object.freeze({
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
+});
+const DEFAULT_TIME = '12:00';
+const DEFAULT_TYPE = 'flat';
+const DEFAULT_ROOMS_NUMBER = '1';
+
+let form = document.querySelector('form.ad-form');
+let titleField = form.querySelector('#title');
+let addressField = form.querySelector('#address');
+let typeField = form.querySelector('#type');
+let priceField = form.querySelector('#price');
+let timeInField = form.querySelector('#timein');
+let timeOutField = form.querySelector('#timeout');
+let roomsField = form.querySelector('#room_number');
+let guestsField = form.querySelector('#capacity');
+let featuresField = form.querySelector('.features');
+let descriptionField = form.querySelector('#description');
 // const submitBtn = form.querySelector('.ad-form__submit');
 const resetBtn = form.querySelector('.ad-form__reset');
 
 /* Утилиты */
 const setMinimalPrice = (selectedType) => {
-  priceField.placeholder = MIN_PRICES[selectedType];
-  priceField.min = MIN_PRICES[selectedType];
+  priceField.placeholder = DefaultPrice[selectedType];
+  priceField.min = DefaultPrice[selectedType];
 };
 
-const setAddress = ({lat, lng}) => {
-  addressField.value = `${lat.toFixed(LOCATION_PRECISION)} в.д., ${lng.toFixed(LOCATION_PRECISION)} с.ш.`
+const setAddress = ({ lat, lng }) => {
+  addressField.value = `${lat.toFixed(LOCATION_PRECISION)} в.д., ${lng.toFixed(
+    LOCATION_PRECISION
+  )} с.ш.`;
 };
 
 const setCapacity = (roomsNumber) => {
@@ -48,10 +62,9 @@ const setCapacity = (roomsNumber) => {
     guestsNumber[2].selected = true;
   }
   if (rooms >= 100) {
-    guestsNumber[3].removeAttribute('disabled', '')
+    guestsNumber[3].removeAttribute('disabled', '');
     guestsNumber[3].selected = true;
   }
-
 };
 
 const resetTitle = () => {
@@ -93,7 +106,6 @@ const resetRooms = () => {
       option.selected = false;
     }
   }
-
 };
 
 const resetFeatures = () => {
@@ -107,7 +119,6 @@ const resetFeatures = () => {
 const resetDescription = () => {
   descriptionField.value = '';
 };
-
 
 /* Обработчики */
 const typeFieldHandler = () => {
@@ -130,7 +141,7 @@ const roomsFieldHandler = () => {
 const resetHandler = (evt) => {
   evt.preventDefault();
 
-  resetMap();
+  // resetMap();s
   resetTitle();
   resetType();
   resetPrice();
@@ -143,13 +154,14 @@ const resetHandler = (evt) => {
 /* Слушатели */
 const enableFormHandlers = () => {
   timeInField.addEventListener('change', () => timesFieldHandler(timeInField));
-  timeOutField.addEventListener('change', () => timesFieldHandler(timeOutField));
+  timeOutField.addEventListener('change', () =>
+    timesFieldHandler(timeOutField)
+  );
   typeField.addEventListener('change', () => typeFieldHandler());
   roomsField.addEventListener('change', () => roomsFieldHandler());
 
   resetBtn.addEventListener('click', (evt) => resetHandler(evt));
 };
-
 
 /* Настройщик */
 // переопределяет изначальные настройки HTML
@@ -158,12 +170,22 @@ const setFormFields = () => {
   setCapacity(DEFAULT_ROOMS_NUMBER);
 };
 
-
 /* Активатор формы */
 const activateForm = () => {
-  document.addEventListener('DOMContentLoaded', setFormFields, {once : true});
+  document.addEventListener('DOMContentLoaded', setFormFields, { once: true });
+
+  form.classList.remove('ad-form--disabled');
+  for (let field of form.children) {
+    field.removeAttribute('disabled', '');
+  }
   enableFormHandlers();
 };
 
+function deactivateForm() {
+  form.classList.add('ad-form--disabled');
+  for (let field of form.children) {
+    field.setAttribute('disabled', '');
+  }
+}
 
-export { activateForm, setAddress };
+export { activateForm, deactivateForm, setAddress };
