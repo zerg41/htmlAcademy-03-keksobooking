@@ -1,2 +1,5 @@
 # htmlAcademy-03-keksobooking
- Cервис размещения объявлений "Кексобукинг". Учебный проект HTML Academy | Профессия "Фронтенд-разработчик" | Модуль 3
+HTML Academy Education Project  
+Frontend Developer Course | Module 3. JavaScript. Professional development of web interfaces.
+## Service for placing ads "Keksobooking"
+*In Progress*
