@@ -1,9 +1,8 @@
-/** ОТРИСОВКА КАРТЫ **/
 /*global L*/
+/** ОТРИСОВКА КАРТЫ **/
 import { createOfferCard } from './offer-card.js';
 import { fakeOffers } from './data.js';
-import { deactivateForm, setAddress } from './form.js';
-// import { setAddress } from './form.js';
+import { activateForm, setAddress } from './form.js';
 
 /* Объявление констант */
 const DEFAULT_MAP_ZOOM = 13;
@@ -17,10 +16,7 @@ let mapCanvas = document.querySelector('#map-canvas');
 let mapFilters = document.querySelector('.map__filters');
 
 /* Объявление переменных */
-let map = L.map(mapCanvas, {
-  center: DEFAULT_LOCATION,
-  zoom: DEFAULT_MAP_ZOOM,
-});
+let map = L.map(mapCanvas);
 
 let mapTileLayer = L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -49,7 +45,17 @@ let userMarker = L.marker(DEFAULT_LOCATION, {
 
 /* Обработчики событий */
 function mapLoadHandler() {
-  return setTimeout(activateMapFilters, 1000);
+  mapTileLayer.addTo(map);
+  userMarker.addTo(map);
+  renderOfferMarkers(fakeOffers);
+
+  setAddress(DEFAULT_LOCATION);
+  activateMapFilters();
+  activateForm();
+}
+
+function userMarkerMoveHandler({ latlng }) {
+  setAddress(latlng);
 }
 
 /* Функции */
@@ -89,13 +95,9 @@ function resetMap() {
 }
 
 function loadMap() {
-  deactivateMapFilters();
-  deactivateForm();
-  map.on('load', (ev) => console.log(ev));
-  mapTileLayer.addTo(map);
-  userMarker.addTo(map);
-  userMarker.on('move', ({ latlng }) => setAddress(latlng));
-  renderOfferMarkers(fakeOffers);
+  map.on('load', mapLoadHandler);
+  map.setView(DEFAULT_LOCATION, DEFAULT_MAP_ZOOM);
+  userMarker.on('move', userMarkerMoveHandler);
 }
 
 export { loadMap, resetMap, deactivateMapFilters };

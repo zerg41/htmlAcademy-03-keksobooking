@@ -58,6 +58,7 @@ export const LOCATION_Y_MIN = 139.7;
 export const LOCATION_Y_MAX = 139.8;
 export const AVATARS_NUMBER = 8;
 export const FAKE_OFFERS_NUMBER = 10;
+
 const generateOfferAuthor = (id) => {
   const author = {
     avatar: `img/avatars/user${id < 10 ? '0' + id : id}.png`,

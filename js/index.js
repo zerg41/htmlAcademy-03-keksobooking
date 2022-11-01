@@ -1,18 +1,5 @@
-import { deactivateForm } from './form.js';
-import { loadMap, deactivateMapFilters } from './map.js';
+import { loadMap } from './map.js';
 
-document.addEventListener(
-  'DOMContentLoaded',
-  () => {
-    // setInactivePageState();
-    loadMap();
-  },
-  {
-    once: true,
-  }
-);
-
-// function setInactivePageState() {
-//   deactivateMapFilters();
-//   deactivateForm();
-// }
+document.addEventListener('DOMContentLoaded', loadMap, {
+  once: true,
+});

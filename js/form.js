@@ -1,8 +1,11 @@
 /** ОБРАБОТКА ПОЛЕЙ ВВОДЫ ФОРМЫ **/
-
 import { findOptionBySelect, findOptionByValue } from './utils.js';
 
+/* Объявление констант */
 const LOCATION_PRECISION = 5;
+const DEFAULT_TIME = '12:00';
+const DEFAULT_TYPE = 'flat';
+const DEFAULT_ROOMS_NUMBER = '1';
 const DefaultPrice = Object.freeze({
   bungalow: 0,
   flat: 1000,
@@ -10,10 +13,8 @@ const DefaultPrice = Object.freeze({
   house: 5000,
   palace: 10000,
 });
-const DEFAULT_TIME = '12:00';
-const DEFAULT_TYPE = 'flat';
-const DEFAULT_ROOMS_NUMBER = '1';
 
+/* Объявление объектов DOM */
 let form = document.querySelector('form.ad-form');
 let titleField = form.querySelector('#title');
 let addressField = form.querySelector('#address');
