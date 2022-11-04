@@ -1,192 +1,186 @@
 /** ОБРАБОТКА ПОЛЕЙ ВВОДЫ ФОРМЫ **/
-import { findOptionBySelect, findOptionByValue } from './utils.js';
+import {
+  getOptionByValue,
+  getSelectedOption,
+  uncheckOptions,
+  LOCATION_PRECISION,
+} from './utils.js';
+import { resetMap } from './map.js';
 
 /* Объявление констант */
-const LOCATION_PRECISION = 5;
-const DEFAULT_TIME = '12:00';
-const DEFAULT_TYPE = 'flat';
-const DEFAULT_ROOMS_NUMBER = '1';
+const DEFAULT_TYPE_INDEX = 1;
+const DEFAULT_TIME_INDEX = 0;
+const DEFAULT_ROOM_NUMBER_INDEX = 0;
 const DefaultPrice = Object.freeze({
-  bungalow: 0,
-  flat: 1000,
-  hotel: 3000,
-  house: 5000,
-  palace: 10000,
+  BUNGALOW: 0,
+  FLAT: 1000,
+  HOTEL: 3000,
+  HOUSE: 5000,
+  PALACE: 10000,
 });
 
 /* Объявление объектов DOM */
-let form = document.querySelector('form.ad-form');
-let titleField = form.querySelector('#title');
-let addressField = form.querySelector('#address');
-let typeField = form.querySelector('#type');
-let priceField = form.querySelector('#price');
-let timeInField = form.querySelector('#timein');
-let timeOutField = form.querySelector('#timeout');
-let roomsField = form.querySelector('#room_number');
-let guestsField = form.querySelector('#capacity');
-let featuresField = form.querySelector('.features');
-let descriptionField = form.querySelector('#description');
-// const submitBtn = form.querySelector('.ad-form__submit');
-const resetBtn = form.querySelector('.ad-form__reset');
+let adForm = document.querySelector('form.ad-form');
+let titleField = adForm.querySelector('#title');
+let addressField = adForm.querySelector('#address');
+let typeField = adForm.querySelector('#type');
+let priceField = adForm.querySelector('#price');
+let timeInField = adForm.querySelector('#timein');
+let timeOutField = adForm.querySelector('#timeout');
+let roomField = adForm.querySelector('#room_number');
+let capacityField = adForm.querySelector('#capacity');
+let descriptionField = adForm.querySelector('#description');
+let featuresFieldset = adForm.querySelector('.features');
+// let submitButton = adForm.querySelector('.ad-form__submit');
+let resetButton = adForm.querySelector('.ad-form__reset');
 
-/* Утилиты */
-const setMinimalPrice = (selectedType) => {
-  priceField.placeholder = DefaultPrice[selectedType];
-  priceField.min = DefaultPrice[selectedType];
-};
+/* Обработчики событий */
+function typeFieldHandler(evt) {
+  let selectedType = getSelectedOption(evt.target).value;
+  setMinimalPrice(selectedType);
+}
 
-const setAddress = ({ lat, lng }) => {
-  addressField.value = `${lat.toFixed(LOCATION_PRECISION)} в.д., ${lng.toFixed(
-    LOCATION_PRECISION
-  )} с.ш.`;
-};
+function timeFieldHandler(evt) {
+  let selectedField = evt.target;
+  let selectedTime = getSelectedOption(selectedField).value;
 
-const setCapacity = (roomsNumber) => {
-  const guestsNumber = guestsField.children;
-  const rooms = parseInt(roomsNumber);
-  for (let guestNumber of guestsNumber) {
-    guestNumber.setAttribute('disabled', '');
+  switch (selectedField) {
+    case timeInField:
+      getOptionByValue(timeOutField, selectedTime).selected = true;
+      break;
+
+    case timeOutField:
+      getOptionByValue(timeInField, selectedTime).selected = true;
+      break;
   }
-  if (rooms > 2 && rooms < 100) {
-    guestsNumber[0].removeAttribute('disabled', '');
-    guestsNumber[1].removeAttribute('disabled', '');
-    guestsNumber[2].removeAttribute('disabled', '');
-    guestsNumber[2].selected = true;
-  }
-  if (rooms > 1 && rooms < 100) {
-    guestsNumber[1].removeAttribute('disabled', '');
-    guestsNumber[2].removeAttribute('disabled', '');
-    guestsNumber[2].selected = true;
-  }
-  if (rooms > 0 && rooms < 100) {
-    guestsNumber[2].removeAttribute('disabled', '');
-    guestsNumber[2].selected = true;
-  }
-  if (rooms >= 100) {
-    guestsNumber[3].removeAttribute('disabled', '');
-    guestsNumber[3].selected = true;
-  }
-};
+}
 
-const resetTitle = () => {
-  titleField.value = '';
-};
+function roomFieldHandler(evt) {
+  let selectedRoomNumber = getSelectedOption(evt.target).value;
+  setCapacity(selectedRoomNumber);
+}
 
-const resetType = () => {
-  for (let option of typeField.children) {
-    if (option.value === DEFAULT_TYPE) {
-      option.selected = true;
-      setMinimalPrice(option.value);
-    } else {
-      option.selected = false;
-    }
-  }
-};
-
-const resetPrice = () => {
-  priceField.value = '';
-};
-
-const resetTimes = () => {
-  for (let option of timeInField.children) {
-    if (option.value === DEFAULT_TIME) {
-      option.selected = true;
-      timesFieldHandler(timeInField);
-    } else {
-      option.selected = false;
-    }
-  }
-};
-
-const resetRooms = () => {
-  for (let option of roomsField.children) {
-    if (option.value === DEFAULT_ROOMS_NUMBER) {
-      option.selected = true;
-      setCapacity(option.value);
-    } else {
-      option.selected = false;
-    }
-  }
-};
-
-const resetFeatures = () => {
-  for (let feature of featuresField.children) {
-    if (feature.type === 'checkbox') {
-      feature.checked = false;
-    }
-  }
-};
-
-const resetDescription = () => {
-  descriptionField.value = '';
-};
-
-/* Обработчики */
-const typeFieldHandler = () => {
-  setMinimalPrice(findOptionBySelect(typeField).value);
-};
-
-const timesFieldHandler = (field) => {
-  const selectedTime = findOptionBySelect(field).value;
-  if (field === timeInField) {
-    findOptionByValue(timeOutField, selectedTime).selected = true;
-  } else if (field === timeOutField) {
-    findOptionByValue(timeInField, selectedTime).selected = true;
-  }
-};
-
-const roomsFieldHandler = () => {
-  setCapacity(findOptionBySelect(roomsField).value);
-};
-
-const resetHandler = (evt) => {
+function resetButtonHandler(evt) {
   evt.preventDefault();
 
-  // resetMap();s
+  resetMap();
   resetTitle();
   resetType();
   resetPrice();
   resetTimes();
-  resetRooms();
+  resetRoomNumber();
   resetFeatures();
   resetDescription();
-};
+}
 
-/* Слушатели */
-const enableFormHandlers = () => {
-  timeInField.addEventListener('change', () => timesFieldHandler(timeInField));
-  timeOutField.addEventListener('change', () =>
-    timesFieldHandler(timeOutField)
-  );
-  typeField.addEventListener('change', () => typeFieldHandler());
-  roomsField.addEventListener('change', () => roomsFieldHandler());
+/* Функции */
+function enableFormHandlers() {
+  typeField.addEventListener('change', (evt) => typeFieldHandler(evt));
+  roomField.addEventListener('change', (evt) => roomFieldHandler(evt));
+  timeInField.addEventListener('change', (evt) => timeFieldHandler(evt));
+  timeOutField.addEventListener('change', (evt) => timeFieldHandler(evt));
+  resetButton.addEventListener('click', (evt) => resetButtonHandler(evt));
+}
 
-  resetBtn.addEventListener('click', (evt) => resetHandler(evt));
-};
+function setAddress({ lat, lng }) {
+  addressField.value =
+    `${lat.toFixed(LOCATION_PRECISION)} в.д.,` +
+    `${lng.toFixed(LOCATION_PRECISION)} с.ш.`;
+}
 
-/* Настройщик */
-// переопределяет изначальные настройки HTML
-const setFormFields = () => {
-  typeFieldHandler();
-  setCapacity(DEFAULT_ROOMS_NUMBER);
-};
+function setMinimalPrice(typeOptionValue) {
+  priceField.placeholder = DefaultPrice[typeOptionValue.toUpperCase()];
+  priceField.min = DefaultPrice[typeOptionValue.toUpperCase()];
+}
 
-/* Активатор формы */
-const activateForm = () => {
-  document.addEventListener('DOMContentLoaded', setFormFields, { once: true });
+function setCapacity(selectedRoomNumber = 1) {
+  const ONE_GUEST_INDEX = 0;
+  const TWO_GUESTS_INDEX = 1;
+  const THREE_GUESTS_INDEX = 2;
+  const NO_GUEST_INDEX = 3;
 
-  form.classList.remove('ad-form--disabled');
-  for (let field of form.children) {
-    field.removeAttribute('disabled', '');
-  }
-  enableFormHandlers();
-};
+  let capacityOptions = capacityField.children;
+  let roomNumber = Number(selectedRoomNumber);
 
-function deactivateForm() {
-  form.classList.add('ad-form--disabled');
-  for (let field of form.children) {
-    field.setAttribute('disabled', '');
+  switch (roomNumber) {
+    case 1:
+      capacityOptions[NO_GUEST_INDEX].setAttribute('disabled', '');
+      capacityOptions[THREE_GUESTS_INDEX].setAttribute('disabled', '');
+      capacityOptions[TWO_GUESTS_INDEX].setAttribute('disabled', '');
+      capacityOptions[ONE_GUEST_INDEX].removeAttribute('disabled');
+      capacityOptions[ONE_GUEST_INDEX].selected = true;
+      break;
+
+    case 2:
+      capacityOptions[NO_GUEST_INDEX].setAttribute('disabled', '');
+      capacityOptions[THREE_GUESTS_INDEX].setAttribute('disabled', '');
+      capacityOptions[TWO_GUESTS_INDEX].removeAttribute('disabled');
+      capacityOptions[ONE_GUEST_INDEX].removeAttribute('disabled');
+      capacityOptions[TWO_GUESTS_INDEX].selected = true;
+      break;
+
+    case 3:
+      capacityOptions[NO_GUEST_INDEX].setAttribute('disabled', '');
+      capacityOptions[THREE_GUESTS_INDEX].removeAttribute('disabled');
+      capacityOptions[TWO_GUESTS_INDEX].removeAttribute('disabled');
+      capacityOptions[ONE_GUEST_INDEX].removeAttribute('disabled');
+      capacityOptions[THREE_GUESTS_INDEX].selected = true;
+      break;
+
+    case 100:
+      capacityOptions[NO_GUEST_INDEX].removeAttribute('disabled', '');
+      capacityOptions[THREE_GUESTS_INDEX].setAttribute('disabled', '');
+      capacityOptions[TWO_GUESTS_INDEX].setAttribute('disabled', '');
+      capacityOptions[ONE_GUEST_INDEX].setAttribute('disabled', '');
+      capacityOptions[NO_GUEST_INDEX].selected = true;
   }
 }
 
-export { activateForm, deactivateForm, setAddress };
+function resetTitle() {
+  titleField.value = '';
+}
+
+function resetType() {
+  let defaultTypeOption = typeField.children[DEFAULT_TYPE_INDEX];
+
+  defaultTypeOption.selected = true;
+  setMinimalPrice(defaultTypeOption.value);
+}
+
+function resetPrice() {
+  priceField.value = '';
+}
+
+function resetTimes() {
+  timeInField.children[DEFAULT_TIME_INDEX].selected = true;
+  timeOutField.children[DEFAULT_TIME_INDEX].selected = true;
+}
+
+function resetRoomNumber() {
+  let defaultRoomNumberOption = roomField.children[DEFAULT_ROOM_NUMBER_INDEX];
+
+  defaultRoomNumberOption.selected = true;
+
+  setCapacity(defaultRoomNumberOption.value);
+}
+
+function resetFeatures() {
+  uncheckOptions(featuresFieldset.elements);
+}
+
+function resetDescription() {
+  descriptionField.value = '';
+}
+
+function activateForm() {
+  adForm.classList.remove('ad-form--disabled');
+
+  for (let field of adForm.children) {
+    field.removeAttribute('disabled', '');
+  }
+
+  setCapacity();
+  enableFormHandlers();
+}
+
+export { activateForm, setAddress };

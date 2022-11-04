@@ -1,10 +1,14 @@
-/*global L*/
 /** ОТРИСОВКА КАРТЫ **/
 import { createOfferCard } from './offer-card.js';
 import { fakeOffers } from './data.js';
+import { uncheckOptions } from './utils.js';
 import { activateForm, setAddress } from './form.js';
 
 /* Объявление констант */
+const SELECT_TAG = 'SELECT';
+const FIELDSET_TAG = 'FIELDSET';
+const DEFAULT_SELECT_OPTION = 0;
+
 const DEFAULT_MAP_ZOOM = 13;
 const DEFAULT_LOCATION = Object.freeze({
   lat: 35.6895,
@@ -13,9 +17,10 @@ const DEFAULT_LOCATION = Object.freeze({
 
 /* Объявление объектов DOM */
 let mapCanvas = document.querySelector('#map-canvas');
-let mapFilters = document.querySelector('.map__filters');
+let mapFiltersForm = document.querySelector('.map__filters');
 
 /* Объявление переменных */
+/* global L */
 let map = L.map(mapCanvas);
 
 let mapTileLayer = L.tileLayer(
@@ -75,23 +80,24 @@ function renderOfferMarkers(offers = []) {
   });
 }
 
-function deactivateMapFilters() {
-  mapFilters.classList.add('map__filters--disabled');
-  for (let filter of mapFilters.children) {
-    filter.setAttribute('disabled', '');
-  }
-}
-
 function activateMapFilters() {
-  mapFilters.classList.remove('map__filters--disabled');
-  for (let filter of mapFilters.children) {
+  mapFiltersForm.classList.remove('map__filters--disabled');
+
+  for (let filter of mapFiltersForm.children) {
     filter.removeAttribute('disabled', '');
   }
 }
 
-function resetMap() {
-  map.setView(DEFAULT_LOCATION, DEFAULT_MAP_ZOOM);
-  userMarker.setLatLng(DEFAULT_LOCATION);
+function resetMapFilters() {
+  for (let filter of mapFiltersForm.children) {
+    if (filter.tagName === SELECT_TAG) {
+      filter[DEFAULT_SELECT_OPTION].selected = true;
+    }
+
+    if (filter.tagName === FIELDSET_TAG) {
+      uncheckOptions(filter.elements);
+    }
+  }
 }
 
 function loadMap() {
@@ -100,4 +106,10 @@ function loadMap() {
   userMarker.on('move', userMarkerMoveHandler);
 }
 
-export { loadMap, resetMap, deactivateMapFilters };
+function resetMap() {
+  resetMapFilters();
+  map.setView(DEFAULT_LOCATION, DEFAULT_MAP_ZOOM);
+  userMarker.setLatLng(DEFAULT_LOCATION);
+}
+
+export { loadMap, resetMap };

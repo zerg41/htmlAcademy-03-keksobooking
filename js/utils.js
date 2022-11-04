@@ -1,6 +1,9 @@
 /** УТИЛИТЫ **/
 
-/* РАБОТА С ЧИСЛАМИ */
+/* Константы */
+export const LOCATION_PRECISION = 5;
+
+/* Работа с числами */
 /** Функция возвращает случайное целое число из переданного диапазона включительно
  *
  * @param {number} min диапазон "от", целое неотрицательное число
@@ -42,13 +45,13 @@ export const getRandomFloat = (min, max, digitsAfterComma = 0) => {
   return Number(rand.toFixed(digitsAfterComma));
 };
 
-/* РАБОТА С МАССИВАМИ */
+/* Работа с массивами */
 export const extractRandomItemsFromArray = (array) => {
   return array.filter(() => getRandomInt(0, 1));
 };
 
-/* РАБОТА С DOM-ЭЛЕМЕНТАМИ */
-export const findOptionBySelect = (selectField) => {
+/* Работа с DOM-элементами */
+export const getSelectedOption = (selectField) => {
   const selectedOption = [...selectField.children].filter(
     (option) => option.selected === true
   )[0];
@@ -56,7 +59,7 @@ export const findOptionBySelect = (selectField) => {
   return selectedOption;
 };
 
-export const findOptionByValue = (selectField, value) => {
+export const getOptionByValue = (selectField, value) => {
   const selectedOption = [...selectField.children].filter(
     (option) => option.value === value
   )[0];
@@ -64,6 +67,12 @@ export const findOptionByValue = (selectField, value) => {
   return selectedOption;
 };
 
-/* ОТРИСОВКА ЭЛЕМЕНТОВ */
+export const uncheckOptions = (options) => {
+  for (let option of options) {
+    option.checked = false;
+  }
+};
+
+/* Отрисовка элементов */
 export const renderElementAfterElementParent = (element, elementParent) =>
   elementParent.appendChild(element);

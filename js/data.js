@@ -3,6 +3,7 @@ import {
   getRandomFloat,
   getRandomInt,
   extractRandomItemsFromArray,
+  LOCATION_PRECISION,
 } from './utils.js';
 
 // КОНСТАНТЫ
@@ -16,12 +17,12 @@ const OFFER_FEATURES = [
   'elevator',
   'conditioner',
 ];
-export const OFFER_PHOTOS = [
+const OFFER_PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
 ];
-export const OFFER_TITLES = [
+const OFFER_TITLES = [
   'Apart-Hotel высота +540',
   'The Palace',
   'Villas at Marina Inn at Grande Dunes',
@@ -33,7 +34,7 @@ export const OFFER_TITLES = [
   'House By The Beach',
   'ARROWHEAD AT RIVERWALK-Golf, close to beaches. LOCATION!',
 ];
-export const OFFER_DESCRIPTIONS = [
+const OFFER_DESCRIPTIONS = [
   'Апарт-отель Grand Sandestin расположен в 2,6 км от пляжа Мирамар. К услугам гостей открытый бассейн, частный пляж и апартаменты с кондиционером.',
   'Апартаменты Purple Sunset - Central Destin - 1BR Condo с кондиционером и собственным бассейном расположены в городе Дестин. К услугам гостей бесплатная частная парковка.',
   'Апартаменты Sandestin Resort Bahia by Tufan расположены в Дестине, в 2,5 км от пляжа Мирамар и в 600 м от круизной компании SunQuest Cruises.',
@@ -45,19 +46,18 @@ export const OFFER_DESCRIPTIONS = [
   'Апарт-отель The Palace расположен в городе Миртл-Бич, в 3 км от парка штата Миртл-Бич и в 3,1 км от набережной Миртл-Бич.',
   'Апартаменты ARROWHEAD AT RIVERWALK-Golf расположены в городе Мертл-Бич, в 3,1 км от торгового центра The Market Common и в 5 км от парка штата Миртл-Бич. Расположение!',
 ];
-export const MIN_PRICE = 10000;
-export const MAX_PRICE = 100000;
-export const MIN_ROOMS = 1;
-export const MAX_ROOMS = 10;
-export const MIN_GUESTS = 1;
-export const MAX_GUESTS = 10;
-const LOCATION_PRECISION = 5;
-export const LOCATION_X_MIN = 35.65;
-export const LOCATION_X_MAX = 35.7;
-export const LOCATION_Y_MIN = 139.7;
-export const LOCATION_Y_MAX = 139.8;
-export const AVATARS_NUMBER = 8;
-export const FAKE_OFFERS_NUMBER = 10;
+const MIN_PRICE = 10000;
+const MAX_PRICE = 100000;
+const MIN_ROOMS = 1;
+const MAX_ROOMS = 10;
+const MIN_GUESTS = 1;
+const MAX_GUESTS = 10;
+const LOCATION_X_MIN = 35.65;
+const LOCATION_X_MAX = 35.7;
+const LOCATION_Y_MIN = 139.7;
+const LOCATION_Y_MAX = 139.8;
+const AVATARS_NUMBER = 8;
+const FAKE_OFFERS_NUMBER = 10;
 
 const generateOfferAuthor = (id) => {
   const author = {
