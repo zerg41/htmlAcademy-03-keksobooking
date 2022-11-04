@@ -31,7 +31,7 @@ let roomField = adForm.querySelector('#room_number');
 let capacityField = adForm.querySelector('#capacity');
 let descriptionField = adForm.querySelector('#description');
 let featuresFieldset = adForm.querySelector('.features');
-// let submitButton = adForm.querySelector('.ad-form__submit');
+let submitButton = adForm.querySelector('.ad-form__submit');
 let resetButton = adForm.querySelector('.ad-form__reset');
 
 /* Обработчики событий */
@@ -62,16 +62,10 @@ function roomFieldHandler(evt) {
 
 function resetButtonHandler(evt) {
   evt.preventDefault();
-
-  resetMap();
-  resetTitle();
-  resetType();
-  resetPrice();
-  resetTimes();
-  resetRoomNumber();
-  resetFeatures();
-  resetDescription();
+  resetForm();
 }
+
+function submitButtonHandler() {}
 
 /* Функции */
 function enableFormHandlers() {
@@ -80,6 +74,7 @@ function enableFormHandlers() {
   timeInField.addEventListener('change', (evt) => timeFieldHandler(evt));
   timeOutField.addEventListener('change', (evt) => timeFieldHandler(evt));
   resetButton.addEventListener('click', (evt) => resetButtonHandler(evt));
+  submitButton.addEventListener('click', (evt) => submitButtonHandler(evt));
 }
 
 function setAddress({ lat, lng }) {
@@ -181,6 +176,17 @@ function activateForm() {
 
   setCapacity();
   enableFormHandlers();
+}
+
+function resetForm() {
+  resetMap();
+  resetTitle();
+  resetType();
+  resetPrice();
+  resetTimes();
+  resetRoomNumber();
+  resetFeatures();
+  resetDescription();
 }
 
 export { activateForm, setAddress };
