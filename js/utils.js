@@ -73,6 +73,10 @@ export const uncheckOptions = (options) => {
   }
 };
 
+export const removeDomElement = (element) => {
+  element.parentNode.removeChild(element);
+};
+
 /* Отрисовка элементов */
 export const renderElementAfterElementParent = (element, elementParent) =>
   elementParent.appendChild(element);

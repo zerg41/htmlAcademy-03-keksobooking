@@ -1,14 +1,14 @@
 /** ОТРИСОВКА КАРТЫ **/
-import { createOfferCard } from './offer-card.js';
-import { fakeOffers } from './data.js';
-import { uncheckOptions } from './utils.js';
+
 import { activateForm, setAddress } from './form.js';
+import { createOfferCard } from './offer-card.js';
+import { uncheckOptions } from './utils.js';
+// import { fakeOffers } from './data.js';
 
 /* Объявление констант */
 const SELECT_TAG = 'SELECT';
 const FIELDSET_TAG = 'FIELDSET';
 const DEFAULT_SELECT_OPTION = 0;
-
 const DEFAULT_MAP_ZOOM = 13;
 const DEFAULT_LOCATION = Object.freeze({
   lat: 35.6895,
@@ -52,7 +52,6 @@ let userMarker = L.marker(DEFAULT_LOCATION, {
 function mapLoadHandler() {
   mapTileLayer.addTo(map);
   userMarker.addTo(map);
-  renderOfferMarkers(fakeOffers);
 
   setAddress(DEFAULT_LOCATION);
   activateMapFilters();
@@ -64,12 +63,12 @@ function userMarkerMoveHandler({ latlng }) {
 }
 
 /* Функции */
-function renderOfferMarkers(offers = []) {
+function renderOffers(offers = []) {
   return offers.map((offer) => {
     L.marker(
       {
-        lat: offer.location.x,
-        lng: offer.location.y,
+        lat: offer.location.lat,
+        lng: offer.location.lng,
       },
       {
         icon: offerMarkerIcon,
@@ -112,4 +111,4 @@ function resetMap() {
   userMarker.setLatLng(DEFAULT_LOCATION);
 }
 
-export { loadMap, resetMap };
+export { loadMap, resetMap, renderOffers };

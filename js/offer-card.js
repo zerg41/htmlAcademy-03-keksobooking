@@ -1,8 +1,9 @@
 /** ГЕНЕРАЦИЯ РАЗМЕТКИ ПОХОЖИХ ОБЪЯВЛЕНИЙ НА ОСНОВЕ ДАННЫХ **/
+import { removeDomElement } from './utils.js';
 
 const offerCardTemplate = document.getElementById('card').content.children[0];
 
-const translateOfferType = (type) => {
+function getTypeName(type) {
   switch (type.toString()) {
     case 'flat':
       return 'Квартира';
@@ -15,10 +16,11 @@ const translateOfferType = (type) => {
     default:
       return '';
   }
-};
+}
 
-const joinCapacity = (rooms, guests) => {
+function getCapacity(rooms, guests) {
   let roomsDescription;
+
   switch (parseInt(rooms)) {
     case 1: {
       roomsDescription = 'комната';
@@ -39,29 +41,44 @@ const joinCapacity = (rooms, guests) => {
   return `${rooms} ${roomsDescription} для ${guests} ${
     guests == 1 ? 'гостя' : 'гостей'
   }`;
-};
+}
 
-const joinFeatures = (featuresList, features) => {
-  featuresList.innerHTML = '';
+function getValidAvatarSrc(avatarSrc) {
+  const DEFAULT_AVATAR_SRC = 'img/avatars/default.png';
+  const regex = /\user0[1-8].png/g;
+
+  let isAvatarValid = avatarSrc.match(regex);
+
+  if (isAvatarValid) {
+    return avatarSrc;
+  }
+
+  return DEFAULT_AVATAR_SRC;
+}
+
+function setFeatures(container, features) {
+  container.innerHTML = '';
+
   features.map((feature) => {
-    featuresList.innerHTML += `<li class="popup__feature popup__feature--${feature}"></li>`;
+    container.innerHTML += `<li class="popup__feature popup__feature--${feature}"></li>`;
   });
 
-  return featuresList;
-};
+  return container;
+}
 
-const joinPhotos = (photosList, photos) => {
-  photosList.innerHTML = '';
+function setPhotos(container, photos) {
+  container.innerHTML = '';
+
   if (photos.length !== 0) {
     photos.map((photo) => {
-      photosList.innerHTML += `<img src="${photo}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`;
+      container.innerHTML += `<img src="${photo}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`;
     });
   }
 
-  return photosList;
-};
+  return container;
+}
 
-export const createOfferCard = ({
+export function createOfferCard({
   offer: { title },
   offer: { address },
   offer: { price },
@@ -74,29 +91,51 @@ export const createOfferCard = ({
   offer: { description },
   offer: { photos },
   author: { avatar },
-}) => {
-  const offerCard = offerCardTemplate.cloneNode(true);
-  const featuresList = offerCard.querySelector('.popup__features');
-  const photosList = offerCard.querySelector('.popup__photos');
+}) {
+  let offerCard = offerCardTemplate.cloneNode(true);
+  let featureList = offerCard.querySelector('.popup__features');
+  let photoList = offerCard.querySelector('.popup__photos');
+  let userAvatar = offerCard.querySelector('.popup__avatar');
+  let offerTitle = offerCard.querySelector('.popup__title');
+  let offerAddress = offerCard.querySelector('.popup__text--address');
+  let offerPrice = offerCard.querySelector('.popup__text--price');
+  let offerType = offerCard.querySelector('.popup__type');
+  let offerCapacity = offerCard.querySelector('.popup__text--capacity');
+  let offerTime = offerCard.querySelector('.popup__text--time');
+  let offerDescription = offerCard.querySelector('.popup__description');
 
-  offerCard.querySelector('.popup__title').textContent = title;
-  offerCard.querySelector('.popup__text--address').textContent = address;
-  offerCard.querySelector(
-    '.popup__text--price'
-  ).textContent = `${price} ₽/ночь`;
-  offerCard.querySelector('.popup__type').textContent =
-    translateOfferType(type);
-  offerCard.querySelector('.popup__text--capacity').textContent = joinCapacity(
-    rooms,
-    guests
-  );
-  offerCard.querySelector(
-    '.popup__text--time'
-  ).textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
-  joinFeatures(featuresList, features);
-  offerCard.querySelector('.popup__description').textContent = description;
-  joinPhotos(photosList, photos);
-  offerCard.querySelector('.popup__avatar').src = avatar;
+  avatar
+    ? (userAvatar.src = getValidAvatarSrc(avatar))
+    : removeDomElement(userAvatar);
+
+  title ? (offerTitle.textContent = title) : removeDomElement(offerTitle);
+
+  address
+    ? (offerAddress.textContent = address)
+    : removeDomElement(offerAddress);
+
+  price
+    ? (offerPrice.textContent = `${price} ₽/ночь`)
+    : removeDomElement(offerPrice);
+
+  type
+    ? (offerType.textContent = getTypeName(type))
+    : removeDomElement(offerType);
+
+  rooms && guests
+    ? (offerCapacity.textContent = getCapacity(rooms, guests))
+    : removeDomElement(offerCapacity);
+
+  checkin && checkout
+    ? (offerTime.textContent = `Заезд после ${checkin}, выезд до ${checkout}`)
+    : removeDomElement(offerTime);
+
+  description
+    ? (offerDescription.textContent = description)
+    : removeDomElement(offerDescription);
+
+  features ? setFeatures(featureList, features) : removeDomElement(featureList);
+  photos ? setPhotos(photoList, photos) : removeDomElement(photoList);
 
   return offerCard;
-};
+}
