@@ -105,7 +105,7 @@ function validateForm() {
     return true;
   }
 
-  alert('Form is Not Valid!');
+  alert('Допущены ошибки при заполнении формы!');
   return false;
 }
 

@@ -1,5 +1,7 @@
-const GET_URL = 'https://23.javascript.pages.academy/keksobooking/data';
-const POST_URL = 'https://23.javascript.pages.academy/keksobooking';
+const Url = Object.freeze({
+  GET_OFFERS: 'https://23.javascript.pages.academy/keksobooking/data',
+  POST_OFFER: 'https://23.javascript.pages.academy/keksobooking',
+});
 
 function checkResponse(response) {
   if (response.ok) {
@@ -11,18 +13,18 @@ function checkResponse(response) {
 }
 
 export function getData(onSuccess, onFail) {
-  fetch(GET_URL, {
+  fetch(Url.GET_OFFERS, {
     method: 'GET',
   })
     .then((response) => checkResponse(response))
     .then((data) => onSuccess(data))
     .catch((error) => {
-      onFail ? onFail(error) : alert('Ошибка при загрузке данных');
+      onFail ? onFail(error) : alert('Ошибка при загрузке данных c сервера');
     });
 }
 
 export function postData(body, onSuccess, onFail) {
-  fetch(POST_URL, {
+  fetch(Url.POST_OFFER, {
     method: 'POST',
     credentials: 'same-origin',
     body,
