@@ -7,7 +7,7 @@ function checkResponse(response) {
   }
 
   let { status, statusText } = response;
-  return new Error(`${status} - ${statusText}`);
+  throw new Error(`${status} - ${statusText}`);
 }
 
 export function getData(onSuccess, onFail) {
@@ -15,24 +15,21 @@ export function getData(onSuccess, onFail) {
     method: 'GET',
   })
     .then((response) => checkResponse(response))
-    .then((data) => {
-      onSuccess && onSuccess(data);
-    })
-    .catch((error) =>
-      onFail ? onFail(error) : alert('Ошибка при загрузке данных:\n' + error)
-    );
+    .then((data) => onSuccess(data))
+    .catch((error) => {
+      onFail ? onFail(error) : alert('Ошибка при загрузке данных');
+    });
 }
 
 export function postData(body, onSuccess, onFail) {
   fetch(POST_URL, {
     method: 'POST',
+    credentials: 'same-origin',
     body,
   })
     .then((response) => checkResponse(response))
-    .then((data) => {
-      onSuccess && onSuccess(data);
-    })
-    .catch(() => {
-      onFail('Не удалось отправить форму. Попробуйте ещё раз');
+    .then((data) => onSuccess(data))
+    .catch((error) => {
+      onFail ? onFail(error) : alert('Не удалось отправить форму');
     });
 }

@@ -1,11 +1,13 @@
 /** ОБРАБОТКА ПОЛЕЙ ВВОДЫ ФОРМЫ **/
+import { postData as postFormData } from './api.js';
+import { resetMap } from './map.js';
+import { openModal } from './modal.js';
 import {
   getOptionByValue,
   getSelectedOption,
   uncheckOptions,
   LOCATION_PRECISION,
 } from './utils.js';
-import { resetMap } from './map.js';
 
 /* Объявление констант */
 const DEFAULT_TYPE_INDEX = 1;
@@ -65,16 +67,46 @@ function resetButtonHandler(evt) {
   resetForm();
 }
 
-function submitButtonHandler() {}
+function submitFormHandler(evt) {
+  evt.preventDefault();
+
+  let isFormValid = validateForm();
+  let formData = new FormData(adForm);
+
+  function onSubmitSuccess() {
+    openModal('success');
+    resetForm();
+  }
+
+  function onSubmitFail() {
+    openModal('error');
+  }
+
+  if (isFormValid) {
+    postFormData(formData, onSubmitSuccess, onSubmitFail);
+  }
+}
 
 /* Функции */
 function enableFormHandlers() {
+  adForm.addEventListener('submit', (evt) => submitFormHandler(evt));
   typeField.addEventListener('change', (evt) => typeFieldHandler(evt));
   roomField.addEventListener('change', (evt) => roomFieldHandler(evt));
   timeInField.addEventListener('change', (evt) => timeFieldHandler(evt));
   timeOutField.addEventListener('change', (evt) => timeFieldHandler(evt));
   resetButton.addEventListener('click', (evt) => resetButtonHandler(evt));
-  submitButton.addEventListener('click', (evt) => submitButtonHandler(evt));
+  submitButton.addEventListener('click', (evt) => submitFormHandler(evt));
+}
+
+function validateForm() {
+  let isFormValid = adForm.checkValidity();
+
+  if (isFormValid) {
+    return true;
+  }
+
+  alert('Form is Not Valid!');
+  return false;
 }
 
 function setAddress({ lat, lng }) {

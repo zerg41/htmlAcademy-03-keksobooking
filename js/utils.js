@@ -77,6 +77,7 @@ export const removeDomElement = (element) => {
   element.parentNode.removeChild(element);
 };
 
-/* Отрисовка элементов */
-export const renderElementAfterElementParent = (element, elementParent) =>
-  elementParent.appendChild(element);
+export const renderDomElement = (element, parent) => {
+  let rootElement = parent || element;
+  rootElement.parentNode.appendChild(element);
+};
