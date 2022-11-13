@@ -1,6 +1,7 @@
 /** ОБРАБОТКА ПОЛЕЙ ВВОДЫ ФОРМЫ **/
 import { postData as postFormData } from './api.js';
 import { resetMap } from './map.js';
+import { resetMapFilters } from './map-filters.js';
 import { openModal } from './modal.js';
 import {
   getOptionByValue,
@@ -212,6 +213,8 @@ function activateForm() {
 
 function resetForm() {
   resetMap();
+  resetMapFilters();
+
   resetTitle();
   resetType();
   resetPrice();
