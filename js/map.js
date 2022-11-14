@@ -92,11 +92,9 @@ function loadMap() {
 
   fetchOffers((data) => {
     offerData = data;
+    renderOffers(offerData);
 
-    if (offerData) {
-      renderOffers(offerData);
-      activateMapFilters();
-    }
+    activateMapFilters();
   });
 }
 
