@@ -6,7 +6,7 @@ import { debounce, uncheckOptions } from './utils.js';
 const SELECT_TAG = 'SELECT';
 const FIELDSET_TAG = 'FIELDSET';
 const DEFAULT_SELECT_OPTION = 0;
-const RERENDER_DELAY = 1000;
+const RERENDER_DELAY = 500;
 
 /* Объявление объектов DOM */
 let mapFilters = document.querySelector('form.map__filters');
@@ -25,49 +25,37 @@ let selectedFeatures = [];
 /* Обработчики событий */
 function typeFilterHandler(evt) {
   evt.preventDefault();
-
   selectedType = evt.target.value;
-
-  filterOffers();
 }
 
 function priceFilterHandler(evt) {
   evt.preventDefault();
-
   selectedPrice = evt.target.value;
-
-  filterOffers();
 }
 
 function roomsFilterHandler(evt) {
   evt.preventDefault();
-
   selectedRooms = evt.target.value;
-
-  filterOffers();
 }
 
 function guestsFilterHandler(evt) {
   evt.preventDefault();
-
   selectedGuests = evt.target.value;
-
-  filterOffers();
 }
 
-/* Функции */
-function filterOffers() {
-  try {
-    console.log(offers);
+function featuresFilterHandler(evt) {
+  evt.preventDefault();
 
-    let filteredOffers = offers.slice().filter(matchOffer);
-
-    renderOffers(filteredOffers);
-  } catch (error) {
-    throw new Error(`Ошибка при фильтрации объявлений: ${error}`);
+  if (evt.target.checked) {
+    selectedFeatures = [...selectedFeatures, evt.target.value];
+  } else {
+    selectedFeatures = selectedFeatures.filter(
+      (feature) => feature !== evt.target.value
+    );
   }
 }
 
+/* Функции */
 function matchType(type) {
   if (selectedType === 'any') {
     return true;
@@ -110,15 +98,44 @@ function matchGuests(guests) {
   return guests === Number(selectedGuests);
 }
 
-function matchFeatures(features) {}
+function matchFeatures(features) {
+  if (selectedFeatures.length === 0) {
+    return true;
+  }
 
-function matchOffer({ offer }) {
+  if (!features) {
+    return false;
+  }
+
+  let isAllSelectedFeaturesIncluded = selectedFeatures.reduce(
+    (previousIncludeCheckResult, feature) => {
+      let isCurrentFeatureIncluded =
+        previousIncludeCheckResult && features && features.includes(feature);
+      return isCurrentFeatureIncluded;
+    },
+    true
+  );
+
+  return isAllSelectedFeaturesIncluded;
+}
+
+function matchFilters({ offer }) {
   return (
     matchType(offer.type) &&
     matchPrice(offer.price) &&
     matchRooms(offer.rooms) &&
-    matchGuests(offer.guests)
+    matchGuests(offer.guests) &&
+    matchFeatures(offer.features)
   );
+}
+
+function filterOffers() {
+  try {
+    let filteredOffers = offers.slice().filter(matchFilters);
+    renderOffers(filteredOffers);
+  } catch (error) {
+    throw new Error(`Ошибка при фильтрации объявлений: ${error}`);
+  }
 }
 
 function activateMapFilters() {
@@ -128,39 +145,19 @@ function activateMapFilters() {
     filter.removeAttribute('disabled', '');
   }
 
-  // typeFilter.addEventListener('change', typeFilterHandler);
+  typeFilter.addEventListener('change', typeFilterHandler);
+  priceFilter.addEventListener('change', priceFilterHandler);
+  roomsFilter.addEventListener('change', roomsFilterHandler);
+  guestsFilter.addEventListener('change', guestsFilterHandler);
+  featuresFilter.addEventListener('change', featuresFilterHandler);
 
-  // priceFilter.addEventListener('change', priceFilterHandler);
-
-  // roomsFilter.addEventListener('change', roomsFilterHandler);
-
-  // guestsFilter.addEventListener('change', guestsFilterHandler);
-  typeFilter.addEventListener(
-    'change',
-    debounce(typeFilterHandler, RERENDER_DELAY)
-  );
-
-  priceFilter.addEventListener(
-    'change',
-    debounce(priceFilterHandler, RERENDER_DELAY)
-  );
-
-  roomsFilter.addEventListener(
-    'change',
-    debounce(roomsFilterHandler, RERENDER_DELAY)
-  );
-
-  guestsFilter.addEventListener(
-    'change',
-    debounce(guestsFilterHandler, RERENDER_DELAY)
-  );
+  mapFilters.addEventListener('change', debounce(filterOffers, RERENDER_DELAY));
 }
 
 function resetMapFilters() {
   for (let filter of mapFilters.children) {
     if (filter.tagName === SELECT_TAG) {
       filter[DEFAULT_SELECT_OPTION].selected = true;
-      // filter[DEFAULT_SELECT_OPTION].value = 'any';
     }
 
     if (filter.tagName === FIELDSET_TAG) {
