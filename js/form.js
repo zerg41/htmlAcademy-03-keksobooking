@@ -3,6 +3,7 @@ import { postData as postFormData } from './api.js';
 import { resetMap } from './map.js';
 import { resetMapFilters } from './map-filters.js';
 import { openModal } from './modal.js';
+import { enableFileUploadHandlers, resetUploadedFiles } from './file-upload.js';
 import {
   getOptionByValue,
   getSelectedOption,
@@ -24,6 +25,7 @@ const DefaultPrice = Object.freeze({
 
 /* Объявление объектов DOM */
 let adForm = document.querySelector('form.ad-form');
+
 let titleField = adForm.querySelector('#title');
 let addressField = adForm.querySelector('#address');
 let typeField = adForm.querySelector('#type');
@@ -97,6 +99,8 @@ function enableFormHandlers() {
   timeOutField.addEventListener('change', (evt) => timeFieldHandler(evt));
   resetButton.addEventListener('click', (evt) => resetButtonHandler(evt));
   submitButton.addEventListener('click', (evt) => submitFormHandler(evt));
+
+  enableFileUploadHandlers();
 }
 
 function validateForm() {
@@ -222,6 +226,8 @@ function resetForm() {
   resetRoomNumber();
   resetFeatures();
   resetDescription();
+
+  resetUploadedFiles();
 }
 
 export { activateForm, setAddress };
