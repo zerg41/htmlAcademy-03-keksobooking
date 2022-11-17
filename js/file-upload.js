@@ -25,11 +25,12 @@ function avatarUploadHandler(evt) {
 
   if (isValidFileName) {
     let reader = new FileReader();
-
-    reader.addEventListener('load', () => {
+    let onLoad = () => {
       avatarPreview.src = reader.result;
-    });
+      reader.removeEventListener('load', onLoad);
+    };
 
+    reader.addEventListener('load', onLoad);
     reader.readAsDataURL(file);
   }
 }
@@ -42,8 +43,7 @@ function photosUploadHandler(evt) {
 
   if (isValidFileName) {
     let reader = new FileReader();
-
-    reader.addEventListener('load', () => {
+    let onLoad = () => {
       let photo = document.createElement('img');
 
       photo.src = reader.result;
@@ -58,13 +58,14 @@ function photosUploadHandler(evt) {
         let photoContainer = defaultPhotoContainer.cloneNode();
         photoContainer.appendChild(photo);
         photosContainer.appendChild(photoContainer);
-
         containers.push(photoContainer);
       }
 
       photos.push(photo);
-    });
+      reader.removeEventListener('load', onLoad);
+    };
 
+    reader.addEventListener('load', onLoad);
     reader.readAsDataURL(file);
   }
 }
