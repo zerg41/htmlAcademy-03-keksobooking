@@ -6,7 +6,7 @@ import {
   LOCATION_PRECISION,
 } from './utils.js';
 
-// КОНСТАНТЫ
+/* Объявление констант */
 const OFFER_TYPES = ['palace', 'flat', 'house', 'bungalow'];
 const OFFER_HOURS = ['12:00', '13:00', '14:00'];
 const OFFER_FEATURES = [
@@ -59,15 +59,19 @@ const LOCATION_Y_MAX = 139.8;
 const AVATARS_NUMBER = 8;
 const FAKE_OFFERS_NUMBER = 10;
 
-const generateOfferAuthor = (id) => {
+/* Объявление переменных */
+let fakeOffers = generateOffers();
+
+/* Функции */
+function generateOfferAuthor(id) {
   const author = {
     avatar: `img/avatars/user${id < 10 ? '0' + id : id}.png`,
   };
 
   return author;
-};
+}
 
-const generateOfferContent = (locationX, locationY) => {
+function generateOfferContent(locationX, locationY) {
   return {
     title: OFFER_TITLES[getRandomInt(0, OFFER_TITLES.length - 1)],
     address: `${locationX}, ${locationY}`,
@@ -82,16 +86,16 @@ const generateOfferContent = (locationX, locationY) => {
       OFFER_DESCRIPTIONS[getRandomInt(0, OFFER_DESCRIPTIONS.length - 1)],
     photos: extractRandomItemsFromArray(OFFER_PHOTOS),
   };
-};
+}
 
-const generateOfferLocation = () => {
+function generateOfferLocation() {
   return {
     x: getRandomFloat(LOCATION_X_MIN, LOCATION_X_MAX, LOCATION_PRECISION),
     y: getRandomFloat(LOCATION_Y_MIN, LOCATION_Y_MAX, LOCATION_PRECISION),
   };
-};
+}
 
-const createOffer = (offerAuthor, offerContent, offerLocation) => {
+function createOffer(offerAuthor, offerContent, offerLocation) {
   const offer = {
     author: offerAuthor,
     offer: offerContent,
@@ -99,9 +103,9 @@ const createOffer = (offerAuthor, offerContent, offerLocation) => {
   };
 
   return offer;
-};
+}
 
-const generateOffers = (offersNumber) => {
+function generateOffers(offersNumber = FAKE_OFFERS_NUMBER) {
   let offers = [];
 
   for (let i = 1; i <= offersNumber; i++) {
@@ -115,6 +119,6 @@ const generateOffers = (offersNumber) => {
   }
 
   return offers;
-};
+}
 
-export const fakeOffers = generateOffers(FAKE_OFFERS_NUMBER);
+export { fakeOffers };

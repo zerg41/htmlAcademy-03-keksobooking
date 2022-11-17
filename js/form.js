@@ -25,7 +25,6 @@ const DefaultPrice = Object.freeze({
 
 /* Объявление объектов DOM */
 let adForm = document.querySelector('form.ad-form');
-
 let titleField = adForm.querySelector('#title');
 let addressField = adForm.querySelector('#address');
 let typeField = adForm.querySelector('#type');

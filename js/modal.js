@@ -1,10 +1,14 @@
+/** МОДАЛЬНЫЕ ОКНА **/
 import { renderDomElement, removeDomElement } from './utils.js';
 
+/* Объявление объектов DOM */
 const successModal = document.getElementById('success').content.children[0];
 const errorModal = document.getElementById('error').content.children[0];
 
+/* Объявление переменных */
 let selectedModal;
 
+/* Обработчики событий */
 function modalClickHandler(evt) {
   evt.preventDefault();
   closeModal(evt.currentTarget);
@@ -19,6 +23,7 @@ function escKeydownHandler(evt) {
   }
 }
 
+/* Функции */
 function closeModal() {
   document.removeEventListener('keydown', escKeydownHandler);
   selectedModal.removeEventListener('click', modalClickHandler);
@@ -26,7 +31,7 @@ function closeModal() {
   removeDomElement(selectedModal);
 }
 
-export function openModal(type) {
+function openModal(type) {
   switch (type) {
     case 'success':
       selectedModal = successModal;
@@ -45,3 +50,5 @@ export function openModal(type) {
   selectedModal.addEventListener('click', modalClickHandler);
   document.addEventListener('keydown', escKeydownHandler);
 }
+
+export { openModal };

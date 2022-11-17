@@ -83,7 +83,6 @@ export function renderDomElement(element, parent) {
 }
 
 /* Асинхронные функции */
-
 export function debounce(cb, interval) {
   let debounceTimer;
   let initCb = cb;

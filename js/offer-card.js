@@ -1,8 +1,10 @@
 /** ГЕНЕРАЦИЯ РАЗМЕТКИ ПОХОЖИХ ОБЪЯВЛЕНИЙ НА ОСНОВЕ ДАННЫХ **/
 import { removeDomElement } from './utils.js';
 
-const offerCardTemplate = document.getElementById('card').content.children[0];
+/* Объявление объектов DOM */
+let offerCardTemplate = document.getElementById('card').content.children[0];
 
+/* Функции */
 function getTypeName(type) {
   switch (type.toString()) {
     case 'flat':
@@ -78,7 +80,7 @@ function setPhotos(container, photos) {
   return container;
 }
 
-export function createOfferCard({
+function createOfferCard({
   offer: { title },
   offer: { address },
   offer: { price },
@@ -139,3 +141,5 @@ export function createOfferCard({
 
   return offerCard;
 }
+
+export { createOfferCard };

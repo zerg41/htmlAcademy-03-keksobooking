@@ -1,8 +1,12 @@
+/** СЕТЕВОЕ ВЗАИМОДЕЙСТВИЕ **/
+
+/* Объявление констант */
 const Url = Object.freeze({
   GET_OFFERS: 'https://23.javascript.pages.academy/keksobooking/data',
   POST_OFFER: 'https://23.javascript.pages.academy/keksobooking',
 });
 
+/* Функции */
 function checkResponse(response) {
   if (response.ok) {
     return response.json();
@@ -12,7 +16,7 @@ function checkResponse(response) {
   throw new Error(`${status} - ${statusText}`);
 }
 
-export function getData(onSuccess, onFail) {
+function getData(onSuccess, onFail) {
   fetch(Url.GET_OFFERS, {
     method: 'GET',
   })
@@ -23,7 +27,7 @@ export function getData(onSuccess, onFail) {
     });
 }
 
-export function postData(body, onSuccess, onFail) {
+function postData(body, onSuccess, onFail) {
   fetch(Url.POST_OFFER, {
     method: 'POST',
     credentials: 'same-origin',
@@ -35,3 +39,5 @@ export function postData(body, onSuccess, onFail) {
       onFail ? onFail(error) : alert('Не удалось отправить форму');
     });
 }
+
+export { getData, postData };
