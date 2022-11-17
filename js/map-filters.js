@@ -155,6 +155,8 @@ function activateMapFilters() {
 }
 
 function resetMapFilters() {
+  selectedFeatures = [];
+
   for (let filter of mapFilters.children) {
     if (filter.tagName === SELECT_TAG) {
       filter[DEFAULT_SELECT_OPTION].selected = true;
@@ -166,6 +168,8 @@ function resetMapFilters() {
 
     filter.dispatchEvent(new Event('change'));
   }
+
+  mapFilters.dispatchEvent(new Event('change'));
 }
 
 export { activateMapFilters, resetMapFilters };
