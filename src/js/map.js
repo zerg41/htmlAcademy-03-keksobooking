@@ -1,4 +1,6 @@
 /** ОТРИСОВКА КАРТЫ **/
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
 import { getData as fetchOffers } from './api.js';
 import { activateMapFilters } from './map-filters.js';
 import { activateForm, setAddress } from './form.js';
@@ -16,7 +18,6 @@ const DEFAULT_LOCATION = Object.freeze({
 let mapCanvas = document.querySelector('#map-canvas');
 
 /* Объявление переменных */
-/* global L */
 let map = L.map(mapCanvas);
 
 let mapTileLayer = L.tileLayer(
