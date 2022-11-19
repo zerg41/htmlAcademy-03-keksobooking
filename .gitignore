@@ -11,4 +11,4 @@ npm-debug.log*
 Thumbs.db
 .vscode/
 
-package-lock.json
+# package-lock.json
