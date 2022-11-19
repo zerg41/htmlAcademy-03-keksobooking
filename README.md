@@ -16,8 +16,8 @@ The application is available at the following link: https://zerg41.github.io/htm
 
 To run the application, do the following:
 
-Clone repository: git clone https://github.com/zerg41/htmlAcademy-03-keksobooking.git
-Install package dependencies: npm -install
-Run npm script to build the application: npm run dev (dev mode with hot reload) or npm build (production mode)
-Run npm script to start dev server: npm start
-Enjoy the App!
+1. Clone repository: git clone https://github.com/zerg41/htmlAcademy-03-keksobooking.git
+2. Install package dependencies: npm -install
+3. Run npm script to build the application: npm run dev (dev mode with hot reload) or npm build (production mode)
+4. Run npm script to start dev server: npm start
+5. Enjoy the App!
